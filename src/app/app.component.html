@@ -1,0 +1,16 @@
+<ion-app>
+  <ion-router-outlet></ion-router-outlet>
+
+  <ion-tabs *ngIf="showTabs" style="z-index: 100000000000000000000000;">
+    <ion-tab-bar slot="bottom">
+      <ion-tab-button tab="home">
+        <ion-icon name="book"></ion-icon>
+        Diary
+      </ion-tab-button>
+      <ion-tab-button tab="configuration">
+        <ion-icon name="settings"></ion-icon>
+        Config
+      </ion-tab-button>
+    </ion-tab-bar>
+  </ion-tabs>
+</ion-app>
