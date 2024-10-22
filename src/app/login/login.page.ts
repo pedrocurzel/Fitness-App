@@ -5,8 +5,8 @@ import { Router } from '@angular/router';
 import UserModel from '../models/UserModel';
 import { AuthService } from '../services/auth/auth.service';
 import RegisterModel from '../models/RegisterModel';
-import { FirestoreService } from '../services/firestore/firestore.service';
 import { LoadingController } from '@ionic/angular';
+import { UserService } from '../services/user/user.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +19,7 @@ export class LoginPage implements OnInit {
   router = inject(Router);
   formBuilder = inject(FormBuilder);
   authService = inject(AuthService);
-  firestoreService = inject(FirestoreService);
+  userService = inject(UserService);
 
   loadingCtrl = inject(LoadingController);
 
@@ -62,7 +62,7 @@ export class LoginPage implements OnInit {
       try {
         let registerModel = new RegisterModel(this.form.getRawValue());
         let userCred = await this.authService.register(registerModel)
-        await this.firestoreService.createUser(userCred, registerModel);
+        await this.userService.createUser(userCred, registerModel);
         await this.login();
       } catch (e) {
         console.error("ERROR WHILE TRYING TO REGISTER");

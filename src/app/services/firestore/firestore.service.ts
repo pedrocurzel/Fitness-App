@@ -1,23 +1,27 @@
-import { inject, Injectable } from '@angular/core';
-import { user, UserCredential } from '@angular/fire/auth';
-import { Firestore, addDoc, collection } from '@angular/fire/firestore';
-import RegisterModel from 'src/app/models/RegisterModel';
+import { Injectable } from '@angular/core';
+import { CollectionReference, DocumentData, DocumentReference, Query, addDoc, docData, getDocs, updateDoc } from '@angular/fire/firestore';
+import DiaryModel from 'src/app/models/DiaryModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FirestoreService {
 
-  firestore = inject(Firestore);
-
-  userCollectionRef = collection(this.firestore, "User");
-
   constructor() { }
 
-  async createUser(userCred: UserCredential, registerModel: RegisterModel) {
-    let userObj = {...registerModel, UserId: userCred.user.uid};
-    delete userObj["Password"];
+  async addDocument(reference: CollectionReference, data: any) {
+    return await addDoc(reference, data);
+  }
 
-    return await addDoc(this.userCollectionRef, userObj);
+  async updateDocument(reference: DocumentReference, updateObj: any) {
+    return await updateDoc(reference, updateObj);
+  }
+
+  async getDocuments(query: Query) {
+    return await getDocs(query);
+  }
+
+  returnDocData(ref: DocumentReference) {
+    return docData(ref);
   }
 }

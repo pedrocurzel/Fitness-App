@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut } from '@angular/fire/auth';
+import { Auth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, User } from '@angular/fire/auth';
 import RegisterModel from 'src/app/models/RegisterModel';
 import UserModel from 'src/app/models/UserModel';
 
@@ -11,6 +11,10 @@ export class AuthService {
   private auth = inject(Auth);
 
   constructor() { }
+
+  getCurrentUser() : User | null {
+    return this.auth.currentUser;
+  }
 
   async register(registerModel: RegisterModel) {
     return await createUserWithEmailAndPassword(this.auth, registerModel.Email!, registerModel.Password!);

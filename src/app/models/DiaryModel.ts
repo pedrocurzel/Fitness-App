@@ -1,4 +1,4 @@
-import { Timestamp } from "@angular/fire/firestore";
+import { DocumentData, Timestamp } from "@angular/fire/firestore";
 import RecordModel from "./RecordModel";
 
 export default class DiaryModel {
@@ -9,4 +9,15 @@ export default class DiaryModel {
     Month?: string;
     Year?: string;
     Records: RecordModel[] = [];
+
+
+    constructor(obj: any) {
+        this.Id = obj["Id"];
+        this.UserId = obj["UserId"];
+        this.Date = obj["Date"];
+        this.Day = obj["Day"];
+        this.Month = obj["Month"];
+        this.Year = obj["Year"];
+        this.Records = obj["Records"];
+    }
 }
