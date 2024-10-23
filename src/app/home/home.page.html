@@ -1,9 +1,18 @@
-<ion-header [translucent]="true">
+<ion-header [translucent]="true" *ngIf="ready">
   <ion-toolbar>
-    <ion-title>Home</ion-title>
-    <ion-button (click)="logout()">
-      Logout
-    </ion-button>
+    <div class="header">
+      <ion-button fill="clear" (click)="navigateDiaries('backward')" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+      <div class="header-date">
+        
+        <p> {{diaryDate()}} </p>
+        
+      </div>
+      <ion-button fill="clear" (click)="navigateDiaries('forward')">
+        <ion-icon name="chevron-forward"></ion-icon>
+      </ion-button>
+    </div>
   </ion-toolbar>
 </ion-header>
 
@@ -13,21 +22,76 @@
       <ion-title size="large">Blank</ion-title>
     </ion-toolbar>
   </ion-header>
-  <h1>
+  <ion-accordion-group [value]="['a', 'b', 'c', 'd']" [multiple]="true">
+    <ion-accordion value="a" class="ion-padding">
+      <ion-item button="false" detail="false" lines="none" slot="header">
+        <ion-label>Café da Manhã</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">
+        First Content
+      </div>
+    </ion-accordion>
 
-    {{diary?.Day}}
+    <ion-accordion value="b" class="ion-padding">
+      <ion-item button="false" detail="false" lines="none" slot="header">
+        <ion-label>Almoço</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">First Content</div>
+    </ion-accordion>
 
-  </h1>
+    <ion-accordion value="c" class="ion-padding">
+      <ion-item button="false" detail="false" lines="none" slot="header">
+        <ion-label>Lanches</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">First Content</div>
+    </ion-accordion>
 
-  <h1>
-    {{diary?.Records?.length}}
-  </h1>
-
-  <ion-button (click)="navigateDiaries('backward')" >
-    backward
-  </ion-button>
-
-  <ion-button (click)="navigateDiaries('forward')" >
-    forward
-  </ion-button>
+    <ion-accordion value="d" class="ion-padding">
+      <ion-item button="false" detail="false" lines="none" slot="header">
+        <ion-label>Jantar</ion-label>
+      </ion-item>
+      <div class="ion-padding" slot="content">First Content</div>
+    </ion-accordion>
+  </ion-accordion-group>
 </ion-content>
+
+<ion-fab slot="fixed" horizontal="end" vertical="bottom">
+  <ion-fab-button (click)="addFood()" >
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+<ion-modal [isOpen]="isAddFoodModalOpen" (willDismiss)="closeModal()">
+  <ng-template>
+    <ion-header>
+      <ion-toolbar>
+        <div style="display: flex; flex-direction: row; align-items: center;">
+          <ion-item lines="none" style="display: flex; flex-grow: 1;">
+            <ion-input type="text" label="Procurar" [(ngModel)]="foodModal.search" ></ion-input>
+            <ion-icon name="search" slot="end"></ion-icon>
+          </ion-item>
+          <ion-buttons slot="end">
+            <ion-button size="large" [strong]="true">
+              <ion-icon name="checkmark" color="success"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </div>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content class="ion-padding">
+      <swiper-container style="min-height: 100%;">
+        <swiper-slide style="min-height: 100% !important;">
+          <ion-list>
+            <ion-item *ngFor="let food of filterFoods()" lines="none" button="true" detail="true" (click)="selectFood(food)" >
+              <ion-label>{{food.Name}}</ion-label>
+            </ion-item>
+          </ion-list>
+        </swiper-slide>
+        <swiper-slide>
+          asdasd
+        </swiper-slide>
+      </swiper-container>
+    </ion-content>
+    
+  </ng-template>
+</ion-modal>

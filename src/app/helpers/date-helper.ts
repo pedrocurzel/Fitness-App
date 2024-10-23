@@ -9,3 +9,7 @@ export function getMonth(date: Date) {
 export function getYear(date: Date) {
     return date.getFullYear().toString();
 }
+
+export function getFullDate(date: Date) {
+    return `${getDay(date)}/${getMonth(date)}/${getYear(date)}`;
+}

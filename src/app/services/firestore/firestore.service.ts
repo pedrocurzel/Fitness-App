@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, DocumentReference, Query, addDoc, docData, getDocs, updateDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, DocumentReference, Query, addDoc, collectionData, docData, getDocs, updateDoc } from '@angular/fire/firestore';
 import DiaryModel from 'src/app/models/DiaryModel';
 
 @Injectable({
@@ -23,5 +23,9 @@ export class FirestoreService {
 
   returnDocData(ref: DocumentReference) {
     return docData(ref);
+  }
+
+  returnCollectionData(query: Query) {
+    return collectionData(query);
   }
 }

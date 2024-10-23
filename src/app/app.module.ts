@@ -11,6 +11,8 @@ import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+
 const firebaseConfig = {
   apiKey: "AIzaSyDMYsg-eUbH9D_wVVxFPlLS_M26uZuaqP4",
   authDomain: "fitness-app-e3d17.firebaseapp.com",
@@ -26,8 +28,9 @@ const firebaseConfig = {
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideFirebaseApp(() => initializeApp(firebaseConfig)),
     provideFirestore(() => getFirestore()),
-    provideAuth(() => getAuth())
+    provideAuth(() => getAuth()),
   ],
   bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

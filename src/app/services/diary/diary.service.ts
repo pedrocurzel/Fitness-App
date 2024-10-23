@@ -47,4 +47,5 @@ export class DiaryService extends FirestoreTemplate {
 
     return this.firestoreService.returnDocData(doc);
   }
+
 } 
