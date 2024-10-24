@@ -20,4 +20,19 @@ export class FoodService extends FirestoreTemplate {
     let q = query(this.foodReference);
     return this.firestoreService.returnCollectionData(q);
   }
+
+  async createFood(foodObj: IFoodObj) {
+    let result = await this.firestoreService.addDocument(this.foodReference, foodObj);
+    return await this.firestoreService.updateDocument(result, {
+      Id: result.id
+    });
+  }
+}
+
+interface IFoodObj {
+  Name: string | null;
+  Calories: string | null;
+  Proteins: string | null;
+  Carbs: string | null;
+  Fat: string | null;
 }

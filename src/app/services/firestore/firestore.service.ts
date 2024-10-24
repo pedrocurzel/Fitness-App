@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
-import { CollectionReference, DocumentData, DocumentReference, Query, addDoc, collectionData, docData, getDocs, updateDoc } from '@angular/fire/firestore';
+import { CollectionReference, DocumentData, DocumentReference, Query, addDoc, collectionData, doc, docData, getDocs, updateDoc } from '@angular/fire/firestore';
 import DiaryModel from 'src/app/models/DiaryModel';
+import FirestoreTemplate from 'src/app/templates/FirestoreTemplate';
 
 @Injectable({
   providedIn: 'root'
 })
-export class FirestoreService {
+export class FirestoreService extends FirestoreTemplate{
 
-  constructor() { }
+  constructor() {
+    super();
+  }
 
   async addDocument(reference: CollectionReference, data: any) {
     return await addDoc(reference, data);
@@ -15,6 +18,10 @@ export class FirestoreService {
 
   async updateDocument(reference: DocumentReference, updateObj: any) {
     return await updateDoc(reference, updateObj);
+  }
+
+  getDocReference(path: string) {
+    return doc(this.firestore, path);
   }
 
   async getDocuments(query: Query) {

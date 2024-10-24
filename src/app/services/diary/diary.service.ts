@@ -1,9 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { collection, doc, getDoc, getDocs, where, query, docData } from '@angular/fire/firestore';
+import { collection, doc, getDoc, getDocs, where, query, docData, updateDoc, deleteDoc } from '@angular/fire/firestore';
 import FirestoreTemplate from 'src/app/templates/FirestoreTemplate';
 import { FirestoreService } from '../firestore/firestore.service';
 import { getDay, getMonth, getYear } from 'src/app/helpers/date-helper';
 import DiaryModel from 'src/app/models/DiaryModel';
+import RecordModel from 'src/app/models/RecordModel';
 
 @Injectable({
   providedIn: 'root'
@@ -48,4 +49,33 @@ export class DiaryService extends FirestoreTemplate {
     return this.firestoreService.returnDocData(doc);
   }
 
+  async addRecord(diary: DiaryModel, data: IFoodRecord) {
+    delete data["search"];
+
+    let docRef = this.firestoreService.getDocReference(`Diary/${diary.Id}`);
+    let records = diary.Records ?? [];
+    records.push(new RecordModel(data));
+    diary.Records = records;
+    return await this.firestoreService.updateDocument(docRef, JSON.parse(JSON.stringify(diary)));
+  }
+
+  async deleteRecord(diaryWithFilteredRecords: DiaryModel) {
+    let docRef = this.firestoreService.getDocReference(`Diary/${diaryWithFilteredRecords.Id}`);
+
+    return await this.firestoreService.updateDocument(docRef, JSON.parse(JSON.stringify(diaryWithFilteredRecords)));
+  }
+
 } 
+
+export interface IFoodRecord {
+  Calories: string,
+  Fat: string,
+  Proteins: string,
+  Carbs: string,
+  Weight: number,
+  Meal: string | null,
+  FoodId: string,
+  DiaryId: string,
+  FoodName: string,
+  search?: string  //<- vai ser deletada sempre
+}

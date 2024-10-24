@@ -6,6 +6,7 @@ import { HomePage } from './home.page';
 
 import { HomePageRoutingModule } from './home-routing.module';
 import { FilterFoodPipe } from '../pipes/filter-food.pipe';
+import { RecordItemComponent } from '../components/record-item/record-item.component';
 
 
 @NgModule({
@@ -17,7 +18,7 @@ import { FilterFoodPipe } from '../pipes/filter-food.pipe';
     ReactiveFormsModule,
     FilterFoodPipe
   ],
-  declarations: [HomePage],
+  declarations: [HomePage, RecordItemComponent],
   providers: [FilterFoodPipe],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

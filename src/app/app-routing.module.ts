@@ -17,6 +17,21 @@ const routes: Routes = [
     path: 'login',
     loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
   },
+  {
+    path: 'create-food',
+    loadChildren: () => import('./create-food/create-food.module').then( m => m.CreateFoodPageModule),
+    canActivate: [authGuard]
+  },
+  { 
+    path: '404', 
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [authGuard]
+  },
+  { 
+    path: '**', 
+    loadChildren: () => import('./home/home.module').then( m => m.HomePageModule),
+    canActivate: [authGuard]
+  }
 ];
 
 @NgModule({

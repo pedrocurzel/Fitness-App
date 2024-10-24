@@ -6,7 +6,7 @@
       </ion-button>
       <div class="header-date">
         
-        <p> {{diaryDate()}} </p>
+        <p> {{diaryDate()}} - {{getDiaryTotalizer()}}</p>
         
       </div>
       <ion-button fill="clear" (click)="navigateDiaries('forward')">
@@ -22,35 +22,58 @@
       <ion-title size="large">Blank</ion-title>
     </ion-toolbar>
   </ion-header>
+
+  <ion-button expand="block" routerLink="/create-food">
+    Criar alimento
+  </ion-button>
+
   <ion-accordion-group [value]="['a', 'b', 'c', 'd']" [multiple]="true">
     <ion-accordion value="a" class="ion-padding">
       <ion-item button="false" detail="false" lines="none" slot="header">
-        <ion-label>Café da Manhã</ion-label>
+        <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
+          <ion-label>Café da Manhã</ion-label>
+          <ion-label>{{getMealTotalizers(1)}}</ion-label>
+        </div>
       </ion-item>
-      <div class="ion-padding" slot="content">
-        First Content
+      <div slot="content" style="padding-left: 10px; padding-right: 10px;">
+        <app-record-item [diary]="diary!" *ngFor="let record of filterRecords(1)" [record]="record" />
       </div>
     </ion-accordion>
 
     <ion-accordion value="b" class="ion-padding">
       <ion-item button="false" detail="false" lines="none" slot="header">
-        <ion-label>Almoço</ion-label>
+        <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
+          <ion-label>Almoço</ion-label>
+          <ion-label>{{getMealTotalizers(2)}}</ion-label>
+        </div>
       </ion-item>
-      <div class="ion-padding" slot="content">First Content</div>
+      <div slot="content" style="padding-left: 10px; padding-right: 10px;">
+        <app-record-item [diary]="diary!" *ngFor="let record of filterRecords(2)" [record]="record" />
+      </div>
     </ion-accordion>
 
     <ion-accordion value="c" class="ion-padding">
       <ion-item button="false" detail="false" lines="none" slot="header">
-        <ion-label>Lanches</ion-label>
+        <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
+          <ion-label>Lanches</ion-label>
+          <ion-label>{{getMealTotalizers(3)}}</ion-label>
+        </div>
       </ion-item>
-      <div class="ion-padding" slot="content">First Content</div>
+      <div slot="content" style="padding-left: 10px; padding-right: 10px;">
+        <app-record-item [diary]="diary!" *ngFor="let record of filterRecords(3)" [record]="record" />
+      </div>
     </ion-accordion>
 
     <ion-accordion value="d" class="ion-padding">
       <ion-item button="false" detail="false" lines="none" slot="header">
-        <ion-label>Jantar</ion-label>
+        <div style="display: flex; width: 100%; justify-content: space-between; align-items: center;">
+          <ion-label>Jantar</ion-label>
+          <ion-label>{{getMealTotalizers(4)}}</ion-label>
+        </div>
       </ion-item>
-      <div class="ion-padding" slot="content">First Content</div>
+      <div slot="content" style="padding-left: 10px; padding-right: 10px;">
+        <app-record-item [diary]="diary!" *ngFor="let record of filterRecords(4)" [record]="record" />
+      </div>
     </ion-accordion>
   </ion-accordion-group>
 </ion-content>
@@ -64,22 +87,36 @@
 <ion-modal [isOpen]="isAddFoodModalOpen" (willDismiss)="closeModal()">
   <ng-template>
     <ion-header>
-      <ion-toolbar>
+      <ion-toolbar *ngIf="!selectedFood">
         <div style="display: flex; flex-direction: row; align-items: center;">
           <ion-item lines="none" style="display: flex; flex-grow: 1;">
             <ion-input type="text" label="Procurar" [(ngModel)]="foodModal.search" ></ion-input>
             <ion-icon name="search" slot="end"></ion-icon>
           </ion-item>
+        </div>
+      </ion-toolbar>
+
+      <ion-toolbar *ngIf="selectedFood">
+        <div style="display: flex; flex-direction: row; align-items: center;">
+          <ion-buttons>
+            <ion-button fill="clear" (click)="backSlide()" >
+              <ion-icon name="arrow-back"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <div style="display: flex; flex-grow: 1; padding-left: 15px;">
+            <label>{{selectedFood.Name}}</label>
+          </div>
           <ion-buttons slot="end">
-            <ion-button size="large" [strong]="true">
+            <ion-button [disabled]="!foodModal.Meal" size="large" [strong]="true" (click)="addDiaryRecord()">
               <ion-icon name="checkmark" color="success"></ion-icon>
             </ion-button>
           </ion-buttons>
         </div>
       </ion-toolbar>
+
     </ion-header>
     <ion-content class="ion-padding">
-      <swiper-container style="min-height: 100%;">
+      <swiper-container style="min-height: 100%;" init="false"  >
         <swiper-slide style="min-height: 100% !important;">
           <ion-list>
             <ion-item *ngFor="let food of filterFoods()" lines="none" button="true" detail="true" (click)="selectFood(food)" >
@@ -88,7 +125,67 @@
           </ion-list>
         </swiper-slide>
         <swiper-slide>
-          asdasd
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-input [disabled]="true" type="text" label="Calorias" [value]="foodModal.Calories"></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-input [disabled]="true" type="text" label="Proteínas" [value]="foodModal.Proteins"></ion-input>
+                <ion-label slot="end">g</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-input [disabled]="true" type="text" label="Carboidratos" [value]="foodModal.Carbs"></ion-input>
+                <ion-label slot="end">g</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-input [disabled]="true" type="text" label="Gorduras" [value]="foodModal.Fat"></ion-input>
+                <ion-label slot="end">g</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-input type="text" label="Peso" [(ngModel)]="foodModal.Weight" (ionInput)="weightChanged()" ></ion-input>
+                <ion-label slot="end">g</ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <ion-item>
+                <ion-select label="Refeição" placeholder="Escolha a refeição" [(ngModel)]="foodModal.Meal" >
+                  <ion-select-option value="1">Café da manhã</ion-select-option>
+                  <ion-select-option value="2">Almoço</ion-select-option>
+                  <ion-select-option value="3">Lanches</ion-select-option>
+                  <ion-select-option value="4">Jantar</ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
+          <ion-row>
+            <ion-col>
+              <div style="width: 100%; justify-content: end; align-items: center; display: flex;">
+                <ion-button color="success" [disabled]="!foodModal.Meal" (click)="addDiaryRecord()">Adicionar</ion-button>
+              </div>
+            </ion-col>
+          </ion-row>
         </swiper-slide>
       </swiper-container>
     </ion-content>

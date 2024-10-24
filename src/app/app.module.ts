@@ -12,6 +12,7 @@ import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getAuth, provideAuth } from '@angular/fire/auth';
 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { TabsComponent } from './components/tabs/tabs.component';
 
 const firebaseConfig = {
   apiKey: "AIzaSyDMYsg-eUbH9D_wVVxFPlLS_M26uZuaqP4",
@@ -23,7 +24,7 @@ const firebaseConfig = {
 };
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, TabsComponent],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     provideFirebaseApp(() => initializeApp(firebaseConfig)),

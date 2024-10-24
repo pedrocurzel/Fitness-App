@@ -1,0 +1,22 @@
+<div style="display: flex; width: 100%; flex-direction: row;">
+  <div style="display: flex; flex-direction: column; flex-grow: 1;">
+    <p>{{record.FoodName}}</p>
+    <div style="display: flex; flex-direction: row; align-items: center;">
+      <p>{{record.Weight}}g</p>
+      -
+      <p>Proteínas {{record.Proteins}}g</p>
+      -
+      <p>Carboidratos {{record.Carbs}}g</p>
+      -
+      <p>Gorduras {{record.Fat}}g</p>
+    </div>
+  </div>
+  <div style="display: flex; align-items: center; justify-content: center;">
+    <p>{{record.Calories}} calorias</p>
+  </div>
+  <div style="display: flex; justify-content: center; align-items: center;">
+    <ion-button color="danger" (click)="deleteRecord()" >
+      <ion-icon name="trash" size="large"> </ion-icon>
+    </ion-button>
+  </div>
+</div>
